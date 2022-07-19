@@ -3,6 +3,7 @@ import './screen.scss'
 import {ReactComponent as Image} from '../images/Files.svg'
 import {useDropzone} from 'react-dropzone'
 import { CircularProgress } from '@mui/material';
+import Table from '../components/table'
 
 
 var nr;
@@ -15,7 +16,6 @@ var tableJSON = [];
 function Screen1() {
 
     //loading spinner state
-
     const [isLoading, setIsLoading] = useState(false);
 
     //file drop being read with FileReader()
@@ -66,15 +66,16 @@ function Screen1() {
                 aperture = result[0]["aperture (type float)"]
                 focusDistance = result[0]["focus (type float)"]
 
-                //get the extracted information in the format(NR - APERTURE - FOCUS DISTANCE)
+
+                //finalValues will be used to display table if it is not null
                 finalValues=nr+aperture+focusDistance
 
                 //created array of extracted values
-                tableJSON.push(finalValues)
+                //get the extracted information in the format(NR, APERTURE, FOCUS DISTANCE)
+                tableJSON.push([nr,aperture,focusDistance])
 
-                console.log(tableJSON)
-
-                setIsLoading(false)//loading state false at end of code
+                //loading state false at end of code
+                setIsLoading(false)
             }
             reader.readAsText(file)
         })
@@ -115,16 +116,25 @@ if(finalValues==null){
                     }
                     else{
 
+                        //sort table to get ascending order Nr.
+                        tableJSON.sort();
+
+                        //creating column values to fill out the table
+                        const column = [
+
+                            {heading:"Nr. ", value:"nr"},
+                            {heading:"Aperture",value:"aperture"},
+                            {heading:"Focus Distance",value:"focus"}
+
+                          ]
+
                         return(
-
-
                             <div className="screen1">
                             <div className= "dropzone">
+                            <Table data = {tableJSON} column={column}/>
                             </div>
                             <button className="export">Export</button>
-
                             </div>
-
                             )
                         }
 
