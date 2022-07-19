@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useCallback} from 'react'
 import './screen.scss'
 import {ReactComponent as Image} from '../images/Files.svg'
 import {useDropzone} from 'react-dropzone'
@@ -8,8 +8,24 @@ import {useDropzone} from 'react-dropzone'
 
 
 function Screen1() {
-    //dropzone const values
-    const {getRootProps, getInputProps, isDragActive} = useDropzone();
+
+    //file drop being read with FileReader()
+    const onDrop = useCallback(acceptedFiles =>{
+
+        acceptedFiles.forEach((file) => {
+
+            const reader = new FileReader()
+            reader.onload = () => {
+                var textFile= reader.result
+                console.log(textFile)
+            }
+            reader.readAsText(file)
+        })
+    })
+
+
+      //dropzone const values
+      const {getRootProps, getInputProps, isDragActive} = useDropzone({onDrop})
 
   return (
 
