@@ -1,20 +1,27 @@
-import React, {useCallback} from 'react'
+import React, {useCallback, useState} from 'react'
 import './screen.scss'
 import {ReactComponent as Image} from '../images/Files.svg'
 import {useDropzone} from 'react-dropzone'
+import { CircularProgress } from '@mui/material';
 
 
 var nr;
 var aperture;
 var focusDistance;
 var finalValues;
-var parsed;
+var tableJSON = [];
 
 
 function Screen1() {
 
+    //loading spinner state
+
+    const [isLoading, setIsLoading] = useState(false);
+
     //file drop being read with FileReader()
     const onDrop = useCallback(acceptedFiles =>{
+
+        setIsLoading(true)//loading while code runs
 
         acceptedFiles.forEach((file) => {
 
@@ -45,26 +52,29 @@ function Screen1() {
 
                 }
 
-                    result.push(newObject)
+                result.push(newObject)
+                result = JSON.stringify(result)
+                result = result.replace(/(?:\\[rn])+/g, "");
+                result = JSON.parse(result)
 
-                    result = JSON.stringify(result)
-                    result = result.replace(/(?:\\[rn])+/g, "");
-                    result = JSON.parse(result)
+                //get the number(Nr.) of the text files
+                nr = file.name
+                nr = nr.split(".")
+                nr = nr[1]
 
-                    //get the number(Nr.) of the text files
-                    nr = file.name
-                    nr = nr.split(".")
-                    nr = nr[1]
+                //extract the aperture and focusDistance values
+                aperture = result[0]["aperture (type float)"]
+                focusDistance = result[0]["focus (type float)"]
 
-                    //extract the aperture and focusDistance values
-                    aperture = result[0]["aperture (type float)"]
-                    focusDistance = result[0]["focus (type float)"]
+                //get the extracted information in the format(NR - APERTURE - FOCUS DISTANCE)
+                finalValues=nr+aperture+focusDistance
 
-                    //get the extracted information in the format(NR - APERTURE - FOCUS DISTANCE)
-                    finalValues=nr+aperture+focusDistance
-                    console.log(finalValues)
+                //created array of extracted values
+                tableJSON.push(finalValues)
 
+                console.log(tableJSON)
 
+                setIsLoading(false)//loading state false at end of code
             }
             reader.readAsText(file)
         })
@@ -74,27 +84,49 @@ function Screen1() {
       //dropzone const values
       const {getRootProps, getInputProps, isDragActive} = useDropzone({onDrop})
 
-  return (
+if(finalValues==null){
 
-    //dropzone code
-    <div className="screen1">
-        <div {...getRootProps({ className: "dropzone" })}>
-            <input id="fileItem" type="file1" className="input-zone" {...getInputProps()} />
-            {isDragActive ? (
-                <p className="dropzone-content">
-                    <Image width="100%"></Image>
-                    Release to drop the files here
-                </p>
-                ) : (
-                <p className="dropzone-content">
-                    <Image width="100%"></Image>
-                    Drag and drop the files of a sequence to extract
-                    the metadata
-                </p>
-                )}
+    return (
+        //dropzone code
+        <div className="screen1">
+            <div {...getRootProps({ className: "dropzone" })}>
+                <input id="fileItem" type="file1" className="input-zone" {...getInputProps()} />
+
+                {
+                isDragActive ? (
+                    <p className="dropzone-content">
+                        <Image width="100%"></Image>
+                        Release to drop the files here
+                    </p>
+                    ) : (
+                        isLoading ? <CircularProgress size={100}/> :
+
+                        <p className="dropzone-content">
+
+                            <Image width="100%"></Image>
+                            Drag and drop the files of a sequence to extract
+                            the metadata
+                        </p>
+                        )
+                }
+            </div>
         </div>
-    </div>
-  )
+    )
+                    }
+                    else{
+
+                        return(
+
+
+                            <div className="screen1">
+                            <div className= "dropzone">
+                            </div>
+                            <button className="export">Export</button>
+
+                            </div>
+
+                            )
+                        }
 
 }
 
