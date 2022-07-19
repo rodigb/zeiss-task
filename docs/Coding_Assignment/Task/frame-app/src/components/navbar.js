@@ -6,7 +6,6 @@ function navbar() {
     <nav className="navbar">
         <a href="/" className="site-title"><span className="highlight">LOGO</span></a>
         <ul className="navbar-list">
-
             <li>
                 <a href="/balance">£44</a>
             </li>
@@ -16,7 +15,6 @@ function navbar() {
             <li>
                 <a href="/settings"><FaCog/> </a>
             </li>
-
         </ul>
     </nav>
   )
