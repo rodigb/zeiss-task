@@ -135,7 +135,7 @@ if(finalValues==null){
 
                         //creating column values to fill out the table
                         const column = [
-                            {heading:""},
+                            {heading:"    "},
                             {heading:"Nr. ", value:"nr"},
                             {heading:"Aperture",value:"aperture"},
                             {heading:"Focus Distance",value:"focus"}
