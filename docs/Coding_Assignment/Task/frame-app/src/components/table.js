@@ -1,12 +1,10 @@
 import './table.scss'
-import {Checkbox, List} from '@mui/material'
-import { useState, useRef } from 'react';
-import $, { data } from 'jquery'
-import { CSVDownload, CSVLink } from "react-csv";
+
+import $ from 'jquery'
 import React from 'react'
 
 
-var selectData =[];
+var selectData =[]; //variables for selected rows
 var list
 var arr = [];
 
@@ -15,8 +13,6 @@ const Table = ({ data, column }) => {
     //create table component
 
   return (
-
-    
     <table>
       <thead>
         <tr>
@@ -29,7 +25,6 @@ const Table = ({ data, column }) => {
         {data.map((item, index) => <TableRow key ={index} id={index} item={item} column={column} />)}
       </tbody>
     </table>
-
   )
 }
 //map the headings of the tble
@@ -51,7 +46,6 @@ const TableRow = ({ item, column, id}) => (
 )
 
 const handleChange = event => {
-
 
   if ($('input.check').is(':checked')){ //Jquery for getting the selected rows TD values
     list = [...$('table tbody tr:has("input:checked")')]

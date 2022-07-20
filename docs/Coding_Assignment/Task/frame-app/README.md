@@ -1,70 +1,380 @@
-# Getting Started with Create React App
+# Initialization
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+In order to clone the repository to the repository, open up your IDE’s terminal and use the following url when cloning:
 
-## Available Scripts
+https://{YOURGITLABUSERNAME}@gitlab.com/cz-cop-ca/1005904/rodi-gemici-bektas.git
 
-In the project directory, you can run:
+My changes were done on my branch, as the main branch was protected and wouldn't allow changes.
 
-### `npm start`
+Git init
+Git checkout -b {your branch name}
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Then whenever you want to go onto the branch use:
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+git checkout {your branch}
 
-### `npm test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Creating the app
 
-### `npm run build`
+Create-react-app frame-app
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Components
 
-### `npm run eject`
+Found under the components folder
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### navbar
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```javascript
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+import React from 'react'
+import './navbar.scss'
+import { FaCog, FaUser} from 'react-icons/fa';
+function navbar() {
+  return (
+    <nav className="navbar">
+        <a href="/" className="site-title"><span className="highlight">LOGO</span></a>
+        <ul className="navbar-list">
+            <li>
+                <a href="/balance">£44</a>
+            </li>
+            <li>
+                <a href="/user"><FaUser/></a>
+            </li>
+            <li>
+                <a href="/settings"><FaCog/> </a>
+            </li>
+        </ul>
+    </nav>
+  )
+}
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+export default navbar
 
-## Learn More
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### Table
 
-### Code Splitting
+```javascript
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+const Table = ({ data, column }) => {
 
-### Analyzing the Bundle Size
+    //create table component
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+  return (
+    <table>
+      <thead>
+        <tr>
+            {/* row for the headers */}
+            {column.map((item, index) => <TableHeadItem key ={index} item={item} />)}
+        </tr>
+      </thead>
+      <tbody>
+        {/* row for the data */}
+        {data.map((item, index) => <TableRow key ={index} id={index} item={item} column={column} />)}
+      </tbody>
+    </table>
+  )
+}
+//map the headings of the tble
+const TableHeadItem = ({ item }) => <th>{item.heading}</th>
+//map all of the extracted data into the rows: [0] is Nr, [1] is aperature, [2] is focusDistance
+const TableRow = ({ item, column, id}) => (
 
-### Making a Progressive Web App
+  <tr id={id}>
+        <><td>
+          <input type="checkbox" className="check"
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+          onChange={handleChange}
 
-### Advanced Configuration
+          value={item[0]+item[1]+item[2]}
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+          />
+          </td><td id={'nr'}>{item[0]}</td><td id={'aperture'}>{item[1]}</td><td id={'focus'}>{item[2]}</td></>
+  </tr>
+)
 
-### Deployment
+const handleChange = event => {
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+  if ($('input.check').is(':checked')){ //Jquery for getting the selected rows TD values
+    list = [...$('table tbody tr:has("input:checked")')]
+    .map(tr =>
+      [...$(tr).find('td')]
+      .reduce((res,td) => (res[$(td).attr('id')]=$(td).text(), res),{}))
 
-### `npm run build` fails to minify
+      arr = []
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+      for(let i=0; i<list.length;i++){
+        var nr = list[i]["nr"]
+        var aperture = list[i]["aperture"]
+        var focus = list[i]["focus"]
+        arr.push([nr,aperture,focus]) //pushing selected values to array
+      }
+
+
+
+
+        selectData = arr
+        localStorage.setItem("data", JSON.stringify(selectData)); //saving selected row values in local storage to be extracted by export component
+
+
+
+}
+
+
+}
+
+```
+
+
+Prerequisites: react-jquery
+
+
+### exportcsv
+
+```javascript
+var data;
+var headers;
+
+function Exportcsv() {
+
+
+  // states for data exports
+  const [isLoaded, setIsLoaded] = useState(false);
+  //state for loading spinner
+  const [isLoading, setIsLoading] = useState(false);
+
+  //function for return home when csv is downloaded
+  function returnHome(){
+
+    const timer = setTimeout(()=> {
+      window.location.href = "/" 
+      },2000)
+
+  }
+
+  //export button function
+  function exportBtn(){
+
+    //set state to true
+    setIsLoaded(true) 
+    setIsLoading(true)
+
+    //get data from local storage
+    data = JSON.parse(localStorage.getItem("data"))
+
+    //create headers for csv file
+    headers = ["Nr.", "Aperture", "Focus Distance"]
+
+
+    //timer for loading spinner
+    const timer = setTimeout(()=> {
+      setIsLoading(false)
+     },1000)
+
+  }
+
+
+  //if isLoaded state is true, return jsx for csv download button
+  if (isLoaded == true) {
+
+    return (
+
+      <div className="csv-export">
+      <br></br>
+      {( isLoading ? <div className="loading-csv"><CircularProgress size={100}/></div> :
+      <div className="download-link">
+      <CSVLink data={data} headers ={headers}>
+      <button className="csv-btn"onClick={returnHome}>Download Me!</button>
+      </CSVLink>
+      </div>
+      )}
+
+      </div>
+      )
+    }
+
+      //else return export loading button
+      else{
+
+        return (
+
+          <div className="csv-export">
+          <button className="csv-btn2" onClick={exportBtn}>Export</button>
+
+          </div>
+
+          )
+        }
+
+
+
+}
+
+
+export default Exportcsv
+
+
+
+```
+
+Prerequisites: MUI, react-csv
+
+## Pages
+
+### Screen
+
+``` javascript
+
+var nr;
+var aperture;
+var focusDistance;
+var finalValues;
+var tableJSON = [];
+ 
+ 
+function Screen() {
+ 
+    //loading spinner state
+    const [isLoading, setIsLoading] = useState(false);
+ 
+    //file drop being read with FileReader()
+    const onDrop = useCallback(acceptedFiles =>{
+ 
+        setIsLoading(true)//loading while code runs
+ 
+        acceptedFiles.forEach((file) => {
+ 
+            var result = []
+            var obj={}
+ 
+            const reader = new FileReader()
+ 
+            //this code is run once the file is loaded via drag and drop.
+            reader.onload = () => {
+ 
+ 
+                //clearing up the text files read and formatting them to be read easily for data extraction
+                var textFile= reader.result
+                var lines = textFile.split("\n");
+                var headers=lines[0].split(",");
+ 
+                for(var i=1;i<lines.length;i++){
+ 
+                    var currentline=lines[i].split(":");
+ 
+                    for(var j=0;j<headers.length;j++){
+ 
+                      obj[currentline[j]] = currentline[1];
+                      var newObject= obj
+ 
+                    }
+ 
+                }
+ 
+                result.push(newObject)
+                result = JSON.stringify(result)
+                result = result.replace(/(?:\\[rn])+/g, "");
+                result = JSON.parse(result)
+ 
+                //get the number(Nr.) of the text files
+                nr = file.name
+                nr = nr.split(".")
+                nr = nr[1]
+ 
+                //extract the aperture and focusDistance values
+                aperture = result[0]["aperture (type float)"]
+                focusDistance = result[0]["focus (type float)"]
+ 
+ 
+                //finalValues will be used to display table if it is not null
+                finalValues=nr+aperture+focusDistance
+ 
+                //created array of extracted values
+                //get the extracted information in the format(NR, APERTURE, FOCUS DISTANCE)
+                tableJSON.push([nr,aperture,focusDistance])
+ 
+                //loading state false at end of code
+                setIsLoading(false)
+            }
+            reader.readAsText(file)
+        })
+    })
+ 
+ 
+      //dropzone const values
+      const {getRootProps, getInputProps, isDragActive} = useDropzone({onDrop})
+ 
+if(finalValues==null){
+ 
+    return (
+        //dropzone code
+        <div className="screen1">
+            <div {...getRootProps({ className: "dropzone" })}>
+                <input id="fileItem" type="file1" className="input-zone" {...getInputProps()} />
+ 
+                {
+                isDragActive ? (
+                    <p className="dropzone-content">
+                        <Image width="100%"></Image>
+                        Release to drop the files here
+                    </p>
+                    ) : (
+                        isLoading ? <CircularProgress size={100}/> :
+ 
+                        <p className="dropzone-content">
+                            <Image width="100%"></Image>
+                            Drag and drop the files of a sequence to extract
+                            the metadata
+                        </p>
+                        )
+                }
+            </div>
+        </div>
+    )
+                    }
+                    else{
+ 
+                        //sort table to get ascending order Nr.
+                        tableJSON.sort();
+ 
+                        //creating column values to fill out the table
+                        const column = [
+ 
+                            {heading:"Nr. ", value:"nr"},
+                            {heading:"Aperture",value:"aperture"},
+                            {heading:"Focus Distance",value:"focus"}
+ 
+                          ]
+ 
+                        return(
+                            <div className="screen1">
+                            <div className= "dropzone">
+                            <Table data = {tableJSON} column={column}/>
+                            </div>
+                            <button className="export">Export</button>
+                            </div>
+                            )
+                        }
+ 
+}
+ 
+ 
+ 
+export default Screen
+
+
+```
+
+Prerequisites: mui/materials, react-dropzone
+
+
+
+## Future improvements
+
+### 
+
+
+
