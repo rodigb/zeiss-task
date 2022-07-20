@@ -2,4 +2,5 @@
   background-color: rgb(17, 17, 17);
   width:100vw;
   height:100vh;
+  overflow:hidden;
 }

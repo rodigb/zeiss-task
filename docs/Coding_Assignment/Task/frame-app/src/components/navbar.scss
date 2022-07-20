@@ -1,6 +1,6 @@
 
 $primary:#ffffff;
-$secondary:#000000;
+$secondary:#060606;
 
 * {
     box-sizing: border-box;
@@ -14,7 +14,7 @@ body {
  
     background-color:$secondary;
     opacity: 0.9;
-    position:absolute;
+    position:static;
     width:100%;
     z-index: 1;
     display:flex;

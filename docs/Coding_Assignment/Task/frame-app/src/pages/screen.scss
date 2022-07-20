@@ -8,12 +8,12 @@
 
 .dropzone{
  
-    margin:12vh;
+   
     color:white;
     border:1px dashed grey;
     opacity: 0.8;
     width:60vw;
-    height:85%;
+    height:70%;
     display: flex;
     justify-content: center;
     text-align: center;
@@ -34,4 +34,12 @@
     align-items: center;
     justify-content: center;
    
+}
+
+@media only screen and (max-width: 800px) {
+    .dropzone{
+        width:100vw;
+        margin:0;
+        
+    }
 }
