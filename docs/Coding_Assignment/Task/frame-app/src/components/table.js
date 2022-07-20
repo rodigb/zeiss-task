@@ -1,5 +1,4 @@
 import './table.scss'
-
 import $ from 'jquery'
 import React from 'react'
 

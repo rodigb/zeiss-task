@@ -377,7 +377,7 @@ Prerequisites: mui/materials, react-dropzone
 ## Future improvements
 
 - Prevent export button working if data array is empty (when a row has not been selected)
-- 
+-
 
 ###
 
