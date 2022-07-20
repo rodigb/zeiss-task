@@ -4,50 +4,49 @@ import { useState, useRef } from 'react';
 import $, { data } from 'jquery'
 import { CSVDownload, CSVLink } from "react-csv";
 import React from 'react'
-import CsvDownload from 'react-json-to-csv'
+
 
 var selectData =[];
 var list
 var newList;
-
-const headers = ["Nr", "Aperture", "Focus Distance"]
-  
-
-const dataValues = selectData
+var dataValues
+var arr = [];
 
 
+console.log(selectData)
 
+
+
+const csvExport = () => {
+
+  return(
+  <CSVLink data={"hi"} >
+  Download me
+  </CSVLink>
+  )
+}
 
 
 const Table = ({ data, column }) => {
- 
-
-  function csvExport(){
- 
-
-  }
 
     //create table component
 
   return (
 
-
+    
     <table>
       <thead>
         <tr>
             {/* row for the headers */}
-            {column.map((item, index) => <TableHeadItem item={item} />)}
+            {column.map((item, index) => <TableHeadItem key ={index} item={item} />)}
         </tr>
       </thead>
       <tbody>
         {/* row for the data */}
-        {data.map((item, index) => <TableRow id={index} item={item} column={column} />)}
+        {data.map((item, index) => <TableRow key ={index} id={index} item={item} column={column} />)}
       </tbody>
-       
-      <CSVLink data={data} headers={headers}>
-      Download me
-      </CSVLink>
     </table>
+
   )
 }
 //map the headings of the tble
@@ -57,7 +56,7 @@ const TableRow = ({ item, column, id}) => (
 
   <tr id={id}>
         <><td>
-          <input type="checkbox" class="check"
+          <input type="checkbox" className="check"
 
           onChange={handleChange}
 
@@ -70,22 +69,31 @@ const TableRow = ({ item, column, id}) => (
 
 const handleChange = event => {
 
-  $('.check').on('change', function() {
+  if ($('input.check').is(':checked')){
     list = [...$('table tbody tr:has("input:checked")')]
     .map(tr =>
-      [...$(tr).find('td:lt(4)')]
+      [...$(tr).find('td')]
         .reduce((res,td) => (res[$(td).attr('id')]=$(td).text(), res),{}))
 
 
-         
+        arr = []
 
-        selectData = list
+        for(let i=0; i<list.length;i++){
+          var nr = list[i]["nr"]
+          var aperture = list[i]["aperture"]
+          var focus = list[i]["focus"]
+          arr.push([nr,aperture,focus])
+        }
+
+        selectData = arr
+        localStorage.setItem("data", JSON.stringify(selectData));
 
 
-})
 
+}
 
- 
+console.log(selectData)
+
 
 }
 

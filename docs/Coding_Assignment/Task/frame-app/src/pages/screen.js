@@ -1,10 +1,11 @@
-import React, {useCallback, useState} from 'react'
+import React, {useCallback, useState, useEffect} from 'react'
 import './screen.scss'
 import {ReactComponent as Image} from '../images/Files.svg'
 import {useDropzone} from 'react-dropzone'
 import { CircularProgress } from '@mui/material';
 import Table from '../components/Table'
 import {CSVLink, CSVDownload} from 'react-csv';
+import Exportcsv from '../components/exportcsv'
 
 //variables
 var nr;
@@ -13,7 +14,9 @@ var focusDistance;
 var finalValues;
 var tableJSON = [];
 
+function csvExport(){
  
+  }
 
 
 function Screen() {
@@ -24,7 +27,9 @@ function Screen() {
     //file drop being read with FileReader()
     const onDrop = useCallback(acceptedFiles =>{
 
-        setIsLoading(true)//loading while code runs
+
+        setIsLoading(true)
+        //loading while code runs
 
         acceptedFiles.forEach((file) => {
 
@@ -77,12 +82,17 @@ function Screen() {
                 //get the extracted information in the format(NR, APERTURE, FOCUS DISTANCE)
                 tableJSON.push([nr,aperture,focusDistance])
 
-                //loading state false at end of code
-                setIsLoading(false)
+                //loading state false at end of code with time out to show loading circle
+                const timer = setTimeout(()=> {
+                    setIsLoading(false)
+                },1000)
+                
             }
             reader.readAsText(file)
         })
     })
+
+    //
 
 
       //dropzone const values
@@ -103,7 +113,7 @@ if(finalValues==null){
                         Release to drop the files here
                     </p>
                     ) : (
-                        isLoading ? <CircularProgress size={100}/> :
+                        isLoading ? <div className="loading"><CircularProgress size={100}/></div> :
 
                         <p className="dropzone-content">
                             <Image width="100%"></Image>
@@ -132,14 +142,13 @@ if(finalValues==null){
 
                           ]
 
-                          
-
                         return(
                             <div className="screen1">
                             <div className= "dropzone">
                             <Table data = {tableJSON} column={column}/>
                             </div>
-                            <div className="csv-link"><button>Export</button></div>
+
+                            <Exportcsv/>
                             </div>
                             )
                         }
