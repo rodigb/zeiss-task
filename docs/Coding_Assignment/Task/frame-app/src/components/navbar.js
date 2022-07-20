@@ -4,7 +4,7 @@ import { FaCog, FaUser} from 'react-icons/fa';
 function navbar() {
   return (
     <nav className="navbar">
-        <a href="/" className="site-title"><span className="highlight">FRAMER</span></a>
+        <a href="/" className="site-title"><span className="highlight">FRAMER GUI</span></a>
         <ul className="navbar-list">
             <li>
                 <a href="/balance">£44</a>

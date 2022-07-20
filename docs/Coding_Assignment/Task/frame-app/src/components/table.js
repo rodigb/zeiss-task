@@ -8,24 +8,7 @@ import React from 'react'
 
 var selectData =[];
 var list
-var newList;
-var dataValues
 var arr = [];
-
-
-console.log(selectData)
-
-
-
-const csvExport = () => {
-
-  return(
-  <CSVLink data={"hi"} >
-  Download me
-  </CSVLink>
-  )
-}
-
 
 const Table = ({ data, column }) => {
 
@@ -69,30 +52,31 @@ const TableRow = ({ item, column, id}) => (
 
 const handleChange = event => {
 
-  if ($('input.check').is(':checked')){
+
+  if ($('input.check').is(':checked')){ //Jquery for getting the selected rows TD values
     list = [...$('table tbody tr:has("input:checked")')]
     .map(tr =>
       [...$(tr).find('td')]
-        .reduce((res,td) => (res[$(td).attr('id')]=$(td).text(), res),{}))
+      .reduce((res,td) => (res[$(td).attr('id')]=$(td).text(), res),{}))
+
+      arr = []
+
+      for(let i=0; i<list.length;i++){
+        var nr = list[i]["nr"]
+        var aperture = list[i]["aperture"]
+        var focus = list[i]["focus"]
+        arr.push([nr,aperture,focus]) //pushing selected values to array
+      }
 
 
-        arr = []
 
-        for(let i=0; i<list.length;i++){
-          var nr = list[i]["nr"]
-          var aperture = list[i]["aperture"]
-          var focus = list[i]["focus"]
-          arr.push([nr,aperture,focus])
-        }
 
         selectData = arr
-        localStorage.setItem("data", JSON.stringify(selectData));
+        localStorage.setItem("data", JSON.stringify(selectData)); //saving selected row values in local storage to be extracted by export component
 
 
 
 }
-
-console.log(selectData)
 
 
 }
