@@ -3,17 +3,20 @@ import './screen.scss'
 import {ReactComponent as Image} from '../images/Files.svg'
 import {useDropzone} from 'react-dropzone'
 import { CircularProgress } from '@mui/material';
-import Table from '../components/table'
+import Table from '../components/Table'
+import {CSVLink, CSVDownload} from 'react-csv';
 
-
+//variables
 var nr;
 var aperture;
 var focusDistance;
 var finalValues;
 var tableJSON = [];
 
+ 
 
-function Screen1() {
+
+function Screen() {
 
     //loading spinner state
     const [isLoading, setIsLoading] = useState(false);
@@ -103,7 +106,6 @@ if(finalValues==null){
                         isLoading ? <CircularProgress size={100}/> :
 
                         <p className="dropzone-content">
-
                             <Image width="100%"></Image>
                             Drag and drop the files of a sequence to extract
                             the metadata
@@ -119,21 +121,25 @@ if(finalValues==null){
                         //sort table to get ascending order Nr.
                         tableJSON.sort();
 
+                        console.log(tableJSON)
+
                         //creating column values to fill out the table
                         const column = [
-
+                            {heading:""},
                             {heading:"Nr. ", value:"nr"},
                             {heading:"Aperture",value:"aperture"},
                             {heading:"Focus Distance",value:"focus"}
 
                           ]
 
+                          
+
                         return(
                             <div className="screen1">
                             <div className= "dropzone">
                             <Table data = {tableJSON} column={column}/>
                             </div>
-                            <button className="export">Export</button>
+                            <div className="csv-link"><button>Export</button></div>
                             </div>
                             )
                         }
@@ -142,4 +148,4 @@ if(finalValues==null){
 
 
 
-export default Screen1
+export default Screen
