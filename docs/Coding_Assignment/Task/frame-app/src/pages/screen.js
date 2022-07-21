@@ -137,8 +137,8 @@ if(finalValues==null){
                         const column = [
                             {heading:"    "},
                             {heading:"Nr. ", value:"nr"},
-                            {heading:"Aperture",value:"aperture"},
-                            {heading:"Focus Distance",value:"focus"}
+                            {heading:"Aperture (T-Stop)",value:"aperture"},
+                            {heading:"Focus Distance (meters)",value:"focus"}
 
                           ]
 
