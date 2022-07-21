@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/zeiss-task/static/css/main.2839322f.css",
-    "main.js": "/zeiss-task/static/js/main.76000d13.js",
+    "main.js": "/zeiss-task/static/js/main.4151871d.js",
     "static/media/Files.svg": "/zeiss-task/static/media/Files.f38a2c01de791c1fb67b5ee89513ae47.svg",
     "index.html": "/zeiss-task/index.html",
     "main.2839322f.css.map": "/zeiss-task/static/css/main.2839322f.css.map",
-    "main.76000d13.js.map": "/zeiss-task/static/js/main.76000d13.js.map"
+    "main.4151871d.js.map": "/zeiss-task/static/js/main.4151871d.js.map"
   },
   "entrypoints": [
     "static/css/main.2839322f.css",
-    "static/js/main.76000d13.js"
+    "static/js/main.4151871d.js"
   ]
 }
