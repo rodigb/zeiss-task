@@ -1,0 +1,57 @@
+.csv-btn2{
+    position: absolute;
+    bottom:4rem;
+    left:68%;
+    width:100px;
+    color:white;
+    background: rgb(0, 94, 255);
+    border: none;
+    border-radius: 4px;
+
+}
+
+button:hover{
+    cursor:pointer;
+}
+
+.csv-btn{
+    position: absolute;
+    bottom:4rem;
+    left:68%;
+    width:100px;
+    color:white;
+    background: rgb(46, 173, 8);
+    border: none;
+    border-radius: 4px;
+    font-weight: bold;
+
+}
+
+.loading-csv{
+
+        position:absolute;
+        right:0;
+        top:0;
+        border:1px dashed grey;
+        opacity: 0.8;
+        background-color: rgb(17, 17, 17);
+        height:100%;
+        width:100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow:hidden;
+
+}
+
+.csv-export{
+
+ overflow:hidden;
+}
+
+@media only screen and (max-width: 800px) {
+    .csv-btn{
+        margin-top: 100px;
+        width:70px;
+    }
+}
